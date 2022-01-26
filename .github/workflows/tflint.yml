@@ -40,7 +40,7 @@ jobs:
       - name: Show tflint exit code
         if: always()
         run: |
-          echo "tflint exit code: ${{ steps.runtflint.outputs.TFLINT_EXITCODE }}
+          echo "tflint exit code: ${{ steps.runtflint.outputs.TFLINT_EXITCODE }}"
 
 
 
