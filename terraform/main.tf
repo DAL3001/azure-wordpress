@@ -2,13 +2,11 @@
 terraform {
 
 
-  backend "remote" {
-    hostname     = "app.terraform.io"
-    organization = "vpzen"
-
-    workspaces {
-      name = "azure-wordpress"
-    }
+  backend "azurerm" {
+    resource_group_name  = "rg-terraform-states"
+    storage_account_name = "tfstate135564"
+    container_name       = "tfstate"
+    key                  = "wordpress.terraform.tfstate"
   }
 
   required_providers {

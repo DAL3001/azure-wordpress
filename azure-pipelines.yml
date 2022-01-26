@@ -9,11 +9,42 @@ trigger:
 pool:
   vmImage: ubuntu-latest
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages:
+- stage: 'terraform'
+  displayName: 'Terraform'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
+  jobs:
+  - job: 'terraform_plan'
+    displayName: 'Terraform Plan'
+    steps:
+
+    - task: Bash@3
+      displayName: 'Install tflint'
+      inputs:
+        targetType: 'inline'
+        script: |
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          echo "Scanning Terraform code in $(pwd)"
+          echo -e "Files: \n $(ls *.tf)"
+          tflint
+        workingDirectory: terraform
+
+    # Install specific Terraform version
+    - task: TerraformInstaller@0
+      displayName: 'Terraform install'
+      inputs:
+        terraformVersion: 1.1.4
+
+    
+    # Initialise Terraform with Azure provider and validate
+    - task: TerraformTaskV2@2
+      displayName: 'Terraform init'
+      inputs:
+        provider: 'azurerm'
+        command: 'init'
+        workingDirectory: terraform
+        backendServiceArm: "AzureDevOps"
+        backendAzureRmResourceGroupName: "rg-terraform-states"
+        backendAzureRmStorageAccountName: "tfstate135564"
+        backendAzureRmContainerName: "tfstate"
+        backendAzureRmKey: "wordpress.terraform.tfstate"
