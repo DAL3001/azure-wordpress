@@ -25,13 +25,19 @@ jobs:
       # Install tflint and perform a scan
       - name: Install and run tflint
         run: |
-          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-          tflint --init --config tflint/tflint.config.hcl
-          tflint terraform --config tflint/tflint.config.hcl
+          run_tflint(){
+            curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+            tflint --init --config tflint/tflint.config.hcl
+            tflint terraform --config tflint/tflint.config.hcl
+            tflint_exitcode+=$?
+            return $tflint_exitcode
+          }
+          
+          OUTPUT=$(run_tflint)
           URL=$(jq -r .pull_request.comments_url "${GITHUB_EVENT_PATH}")
           
-          echo "Scan output:\n$tflintScanOutput"
+          echo "Scan output:\n $OUTPUT"
           echo "URL: $URL"
           
-          echo "${tflintScanOutput}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+          echo "${OUTPUT}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
           
