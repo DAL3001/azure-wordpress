@@ -27,7 +27,7 @@ stages:
           tflint --init --config tflint/tflint.config.hcl
           echo "Scanning Terraform code in $(System.DefaultWorkingDirectory)/terraform"
           echo -e "Files: \n$(ls $(System.DefaultWorkingDirectory)/terraform/*.tf)"
-          tflint $(System.DefaultWorkingDirectory)/terraform --loglevel=debug
+          tflint $(System.DefaultWorkingDirectory)/terraform --loglevel=debug --enable-plugin=azurerm
         workingDirectory: $(System.DefaultWorkingDirectory)
 
     # Install specific Terraform version
