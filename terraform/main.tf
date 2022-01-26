@@ -2,7 +2,7 @@
 terraform {
 
 
-  backend "azurerm" {
+  backend "azurermf" {
     resource_group_name  = "rg-terraform-states"
     storage_account_name = "tfstate135564"
     container_name       = "tfstate"
