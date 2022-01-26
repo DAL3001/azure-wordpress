@@ -29,5 +29,9 @@ jobs:
           tflint --init --config tflint/tflint.config.hcl
           tflintScanOutput=$(tflint terraform --config tflint/tflint.config.hcl)
           URL=$(jq -r .pull_request.comments_url "${GITHUB_EVENT_PATH}")
+          
+          echo "Scan output:\n$tflintScanOutput"
+          echo "URL: $URL"
+          
           echo "${tflintScanOutput}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
           
