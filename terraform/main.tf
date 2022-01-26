@@ -23,7 +23,7 @@ provider "azurerm" {
 }
 
 # Resource group for all wordpress stuff
-resource "azurerm_resource_group" "wordpress" {
+resource "azurerm_resource_groupd" "wordpress" {
   name     = "rg-wordpress-001"
   location = "UK South"
 }
