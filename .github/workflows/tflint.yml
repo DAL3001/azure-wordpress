@@ -26,18 +26,15 @@ jobs:
       - name: Install and run tflint
         id: runtflint
         run: |
-          run_tflint(){
-            curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-            tflint --init --config tflint/tflint.config.hcl
-            tflint terraform --config tflint/tflint.config.hcl
-            TFLINT_EXITCODE=$?
-            echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
-            return $TFLINT_EXITCODE
-          }
-          
-          run_tflint
-          
-            
+          curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
+          tflint --init --config tflint/tflint.config.hcl
+          tflint terraform --config tflint/tflint.config.hcl
+          TFLINT_EXITCODE=$?
+          echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
+          echo "Lololololololol"
+          return $TFLINT_EXITCODE
+
+
       - name: Show tflint exit code
         if: always()
         run: |
