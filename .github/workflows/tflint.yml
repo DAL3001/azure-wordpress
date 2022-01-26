@@ -28,16 +28,19 @@ jobs:
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           tflint --init --config tflint/tflint.config.hcl
-          tflint terraform --config tflint/tflint.config.hcl --force
-          TFLINT_EXITCODE=$?
-          echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
-          echo "tflint exit code $TFLINT_EXITCODE"
-          return $TFLINT_EXITCODE
+          if ! tflint terraform --config tflint/tflint.config.hcl --force ; then
+            TFLINT_EXITCODE=$?
+            echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
+            echo "tflint would exit with code: $TFLINT_EXITCODE"
+          else
+            TFLINT_EXITCODE=$?
+            echo "Looks OK, exit code is $TFLINT_EXITCODE"
+          fi
 
       - name: Show tflint exit code
         if: always()
         run: |
-          echo "tflint exit code: ${{ steps.runtflint.outputs.TFLINT_EXITCODE }}"
+          echo "tflint exit code passed on to the next step: ${{ steps.runtflint.outputs.TFLINT_EXITCODE }}"
 
 
 
