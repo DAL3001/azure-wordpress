@@ -26,4 +26,5 @@ jobs:
       - name: Install and run tflint
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
-          tflint
+          tflint --init --config tflint/tflint.config.hcl
+          tflint terraform --config tflint/tflint.config.hcl
