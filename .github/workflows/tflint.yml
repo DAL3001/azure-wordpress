@@ -28,7 +28,7 @@ jobs:
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           tflint --init --config tflint/tflint.config.hcl
-          tflint terraform --config tflint/tflint.config.hcl
+          tflint terraform --config tflint/tflint.config.hcl --force
           TFLINT_EXITCODE=$?
           echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
           echo "Lololololololol"
