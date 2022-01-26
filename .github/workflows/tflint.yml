@@ -31,8 +31,9 @@ jobs:
           tflint terraform --config tflint/tflint.config.hcl --force
           TFLINT_EXITCODE=$?
           echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
+          echo "tflint exit code $TFLINT_EXITCODE"
           return $TFLINT_EXITCODE
-          
+
       - name: Show tflint exit code
         if: always()
         run: |
