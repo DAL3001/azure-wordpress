@@ -29,13 +29,6 @@ jobs:
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           tflint --init --config tflint/tflint.config.hcl
           tflint terraform --config tflint/tflint.config.hcl
-          code=$?
-          echo ::set-output name=code::$code
-
-      - name: Show tflint exit code
-        if: always()
-        run: |
-          echo "tflint exit code passed on to the next step: ${{ steps.runtflint.outputs.code }}"
 
 
 
