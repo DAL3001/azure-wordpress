@@ -34,16 +34,16 @@ jobs:
           }
           
           OUTPUT=$(run_tflint)
-          URL=$(jq -r .pull_request.comments_url "${GITHUB_EVENT_PATH}")
-          
-          echo "Scan output:\n $OUTPUT"
-          echo "URL: $URL"
-          
-          echo "${OUTPUT}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+          echo "::set-env name=OUTPUT::$OUTPUT"
 
-          if [ $TFLINT_EXITCODE -ne 0 ] ; then
+          if [[ $TFLINT_EXITCODE -ne 0 ]] ; then
             echo "Errors in scan, exiting with errors."
             exit 1
           fi
-          
-          
+
+      - name: Comment PR
+        if: always()
+        uses: thollander/actions-comment-pull-request@v1
+        with:
+          message: ${{ env.OUTPUT }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
