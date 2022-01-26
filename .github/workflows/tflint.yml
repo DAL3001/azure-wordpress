@@ -36,10 +36,12 @@ jobs:
           run_tflint
           echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
             
-      - name: Install and run tflint
+      - name: Show tflint exit code
         if: always()
         run: |
           echo "tflint exit code: $TFLINT_EXITCODE"
+        with: 
+          TFLINT_RESULT: ${{ steps.vars.outputs.TFLINT_EXITCODE }}
 
 
 
