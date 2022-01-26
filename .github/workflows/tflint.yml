@@ -33,8 +33,8 @@ jobs:
             exit 0
           }
           
-          OUTPUT=$(run_tflint)
-          echo "::set-env name=OUTPUT::$OUTPUT"
+          tflintout=$(run_tflint)
+          echo ::set-output name=tflintout::$tflintout
 
           if [[ $TFLINT_EXITCODE -ne 0 ]] ; then
             echo "Errors in scan, exiting with errors."
@@ -45,5 +45,5 @@ jobs:
         if: always()
         uses: thollander/actions-comment-pull-request@v1
         with:
-          message: ${{ env.OUTPUT }}
+          message: ${{ steps.vars.outputs.tflintout }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
