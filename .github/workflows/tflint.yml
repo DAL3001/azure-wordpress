@@ -29,9 +29,8 @@ jobs:
             curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
             tflint --init --config tflint/tflint.config.hcl
             tflint terraform --config tflint/tflint.config.hcl
-            tflint_exitcode+=$?
-            echo "tflint_exitcode=${tflint_exitcode}"
-            return $tflint_exitcode
+            TFLINT_EXITCODE=$?
+            exit 0
           }
           
           OUTPUT=$(run_tflint)
@@ -41,4 +40,10 @@ jobs:
           echo "URL: $URL"
           
           echo "${OUTPUT}" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+
+          if [ $TFLINT_EXITCODE -ne 0 ] ; then
+            echo "Errors in scan, exiting with errors."
+            exit 1
+          fi
+          
           
