@@ -30,6 +30,7 @@ jobs:
             tflint --init --config tflint/tflint.config.hcl
             tflint terraform --config tflint/tflint.config.hcl
             tflint_exitcode+=$?
+            echo "tflint_exitcode=${tflint_exitcode}"
             return $tflint_exitcode
           }
           
