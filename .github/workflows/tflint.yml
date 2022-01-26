@@ -38,10 +38,11 @@ jobs:
             
       - name: Show tflint exit code
         if: always()
+        with: 
+          TFLINT_EXITCODE: ${{ steps.vars.outputs.TFLINT_EXITCODE }}
         run: |
           echo "tflint exit code: $TFLINT_EXITCODE"
-        with: 
-          TFLINT_RESULT: ${{ steps.vars.outputs.TFLINT_EXITCODE }}
+
 
 
 
