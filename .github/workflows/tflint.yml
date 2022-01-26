@@ -31,11 +31,12 @@ jobs:
             tflint --init --config tflint/tflint.config.hcl
             tflint terraform --config tflint/tflint.config.hcl
             TFLINT_EXITCODE=$?
+            echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
             return $TFLINT_EXITCODE
           }
           
           run_tflint
-          echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
+          
             
       - name: Show tflint exit code
         if: always()
