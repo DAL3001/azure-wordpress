@@ -24,6 +24,7 @@ jobs:
 
       # Install tflint and perform a scan
       - name: Install and run tflint
+        id: runtflint
         run: |
           run_tflint(){
             curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
@@ -38,10 +39,8 @@ jobs:
             
       - name: Show tflint exit code
         if: always()
-        with: 
-          TFLINT_EXITCODE: ${{ steps.vars.outputs.TFLINT_EXITCODE }}
         run: |
-          echo "tflint exit code: $TFLINT_EXITCODE"
+          echo "tflint exit code: ${{ steps.runtflint.outputs.TFLINT_EXITCODE }}
 
 
 
