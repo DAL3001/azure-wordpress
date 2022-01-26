@@ -31,17 +31,16 @@ jobs:
             tflint terraform --config tflint/tflint.config.hcl
             TFLINT_EXITCODE=$?
             return $TFLINT_EXITCODE
-            exit 0
           }
           
-          TFLINTOUT=$(run_tflint)
-
-          URL=$(jq -r .pull_request.comments_url "${GITHUB_EVENT_PATH}")
-          echo "Comment URL: $URL"
+          run_tflint
+          echo ::set-output name=TFLINT_EXITCODE::$TFLINT_EXITCODE
+            
+      - name: Install and run tflint
+        if: always()
+        run: |
           echo "tflint exit code: $TFLINT_EXITCODE"
-          echo -e "tfline scan output:\n$TFLINTOUT"
-          
-          echo "Posting a comment..."
-          echo "hello" | curl -s -S -H "Authorization: token ${GITHUB_TOKEN}" --header "Content-Type: application/json" --data @- "${URL}" > /dev/null
+
+
 
   
