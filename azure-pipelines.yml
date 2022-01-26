@@ -26,8 +26,8 @@ stages:
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           tflint --init --config tflint/tflint.config.hcl
           echo "Scanning Terraform code in $(System.DefaultWorkingDirectory)/terraform"
-          echo -e "Files: \n$(ls terraform/*.tf)"
-          tflint terraform
+          echo -e "Files: \n$(ls $(System.DefaultWorkingDirectory)/terraform/*.tf)"
+          tflint $(System.DefaultWorkingDirectory)/terraform --loglevel=debug
         workingDirectory: $(System.DefaultWorkingDirectory)
 
     # Install specific Terraform version
