@@ -27,7 +27,7 @@ jobs:
         run: |
           curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
           tflint --init --config tflint/tflint.config.hcl
-          tflintScanOutput=$(tflint terraform --config tflint/tflint.config.hcl)
+          tflint terraform --config tflint/tflint.config.hcl
           URL=$(jq -r .pull_request.comments_url "${GITHUB_EVENT_PATH}")
           
           echo "Scan output:\n$tflintScanOutput"
