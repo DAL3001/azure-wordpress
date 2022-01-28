@@ -11,6 +11,7 @@ echo "INPUT_TFSEC_OUTPUT_FORMAT: $INPUT_TFSEC_OUTPUT_FORMAT"
 echo "INPUT_TFSEC_OUTPUT_FILE: $INPUT_TFSEC_OUTPUT_FILE"
 echo "INPUT_CHECKOV_EXCLUDE: $INPUT_CHECKOV_EXCLUDE"
 echo "INPUT_TFLINT_EXCLUDE: $INPUT_TFLINT_EXCLUDE"
+echo "INPUT_TFLINT_CONFIG: $INPUT_TFLINT_CONFIG"
 echo
 # install tfsec from GitHub (taken from README.md)
 if [[ -n "$INPUT_TFSEC_VERSION" ]]; then
@@ -88,8 +89,15 @@ run_checkov(){
 
 run_tflint(){
   line_break
+  if [[ -n $INPUT_TFLINT_CONFIG ]] ; then
+    echo "Setting custom (${INPUT_TFLINT_CONFIG}) tflint config..."
+    tflint_config="/tflint-configs/${INPUT_TFLINT_CONFIG}"
+  else
+    echo "Setting default tflint config..."
+    tflint_config="/tflint-configs/tflint.hcl"
+  fi
   echo "Running tflint --init..."
-  tflint --init --config /.tflint.hcl
+  tflint --init --config $tflint_config 
   echo "tflint will check the following folders:"
   echo $1
   directories=($1)
@@ -102,9 +110,9 @@ run_tflint(){
     then
       if [[ -n "$INPUT_TFLINT_EXCLUDE" ]]; then
         echo "Excluding the following checks: ${INPUT_TFLINT_EXCLUDE}"
-        tflint --config /.tflint.hcl --disable-rule="${INPUT_TFLINT_EXCLUDE}" ${terraform_working_dir} 2>&1
+        tflint --config $tflint_config --disable-rule="${INPUT_TFLINT_EXCLUDE}" ${terraform_working_dir} 2>&1
       else
-        tflint --config /.tflint.hcl ${terraform_working_dir} 2>&1
+        tflint --config $tflint_config ${terraform_working_dir} 2>&1
       fi
     else
       echo "Skipping folder as path name contains *templates*"

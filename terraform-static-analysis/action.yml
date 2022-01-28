@@ -20,6 +20,9 @@ inputs:
   checkov_exclude:
     description: 'Provide checks via , without space to exclude from run'
     required: false
+  tflint_config:
+    description: 'Optionally provide a specific config for this run, see "tflint-configs"'
+    required: false
   tflint_exclude:
     description: 'Provide checks via , without space to exclude from run'
     required: false
