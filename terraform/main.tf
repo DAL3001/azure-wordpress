@@ -94,7 +94,7 @@ resource "azurerm_linux_virtual_machine" "wordpress_server_001" {
   location                        = azurerm_resource_group.wordpress.location
   resource_group_name             = azurerm_resource_group.wordpress.name
   network_interface_ids           = [azurerm_network_interface.wordpress_server.id]
-  size                            = "Standard_B1ls"
+  size                            = "Standard_B1lss" 
   admin_username                  = "wpadmin"
   disable_password_authentication = true
   patch_mode                      = "AutomaticByPlatform"

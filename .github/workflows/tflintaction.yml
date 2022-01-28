@@ -29,4 +29,4 @@ jobs:
       with:
         scan_type: full
         terraform_working_dir: terraform
-        tflint_config: tflint.azure.hcl
+        #tflint_config: tflint.azure.hcl
